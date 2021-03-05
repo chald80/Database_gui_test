@@ -447,35 +447,67 @@ namespace Database_gui_test
             }
             else
             {
-
-                try
+                if (dateTimePicker1.Value.Date <= dateTimePicker2.Value.Date)
                 {
-                    string query = "SET IDENTITY_INSERT DemoBooking ON INSERT INTO DemoBooking (Booking_id, Hotel_No, Guest_No, Date_From, Date_To, Room_No) VALUES(" +
-                                   textBox7.Text + "," + comboBox3.Text + ", " + comboBox4.Text + ", '" +
-                                   dateTimePicker1.Value.Date.ToString() + "' , '" + dateTimePicker2.Value.Date.ToString() +
-                                   "', " + comboBox5.Text + ") SET IDENTITY_INSERT DemoBooking OFF;";
-                    using (SqlConnection con = new SqlConnection(connectionString))
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    if (dateTimePicker1.Value.Date == dateTimePicker2.Value.Date)
                     {
-                        con.Open();
-                        object o = cmd.ExecuteReader();
-
-                        label19.Text = "Tabel er blevet indsat";
+                        label18.Text = "Fra og til dato må ikke være den samme";
 
                         var t = new Timer();
                         t.Interval = sec; // it will Tick in 3 seconds
                         t.Tick += (s, e) =>
                         {
-                            label19.Text = "";
+                            label18.Text = "";
                             t.Stop();
                         };
                         t.Start();
-                        con.Close();
+                    }
+                    else
+                    {
+                        try
+                        {
+                            string query =
+                                "SET IDENTITY_INSERT DemoBooking ON INSERT INTO DemoBooking (Booking_id, Hotel_No, Guest_No, Date_From, Date_To, Room_No) VALUES(" +
+                                textBox7.Text + "," + comboBox3.Text + ", " + comboBox4.Text + ", '" +
+                                dateTimePicker1.Value.Date.ToString() + "' , '" + dateTimePicker2.Value.Date.ToString() +
+                                "', " + comboBox5.Text + ") SET IDENTITY_INSERT DemoBooking OFF;";
+                            using (SqlConnection con = new SqlConnection(connectionString))
+                            using (SqlCommand cmd = new SqlCommand(query, con))
+                            {
+                                con.Open();
+                                object o = cmd.ExecuteReader();
+
+                                label19.Text = "Tabel er blevet indsat";
+
+                                var t = new Timer();
+                                t.Interval = sec; // it will Tick in 3 seconds
+                                t.Tick += (s, e) =>
+                                {
+                                    label19.Text = "";
+                                    t.Stop();
+                                };
+                                t.Start();
+                                con.Close();
+                            }
+                        }
+                        catch (System.Data.SqlClient.SqlException)
+                        {
+                            label18.Text = $"{exception2.Message}";
+
+                            var t = new Timer();
+                            t.Interval = sec; // it will Tick in 3 seconds
+                            t.Tick += (s, e) =>
+                            {
+                                label18.Text = "";
+                                t.Stop();
+                            };
+                            t.Start();
+                        }
                     }
                 }
-                catch (System.Data.SqlClient.SqlException)
+                else
                 {
-                    label18.Text = $"{exception2.Message}";
+                    label18.Text = "Til dato skal være større end fra dato";
 
                     var t = new Timer();
                     t.Interval = sec; // it will Tick in 3 seconds
