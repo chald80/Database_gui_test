@@ -8,7 +8,7 @@ namespace Database_gui_test
     {
         public SqlException(string message) : base(message)
         {
-            
+            davs
         }
     }
 }
