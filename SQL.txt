@@ -1,0 +1,1 @@
+CREATE TABLE DemoFacilities( Facilities_No int Primary KEY NOT NULL, Hotel_No int NOT NULL, Facilities CHAR(30), Price FLOAT, FOREIGN KEY (Hotel_No) REFERENCES DemoHotel (Hotel_No) );
