@@ -35,7 +35,7 @@ namespace Database_gui_test
             label30.Text = "";
         }
         string connectionString =
-            "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Hotel;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            "Data Source=178.155.224.44;Initial Catalog=Hotel;User ID=sa;Password=2021Sommer";
         private int sec = 3000;
         private void button1_Click(object sender, EventArgs e)
         {
