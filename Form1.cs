@@ -34,9 +34,13 @@ namespace Database_gui_test
             label31.Text = "";
             label30.Text = "";
         }
+
         string connectionString =
             "Data Source=178.155.224.44;Initial Catalog=Hotel;User ID=sa;Password=2021Sommer";
+
         private int sec = 3000;
+
+
         private void button1_Click(object sender, EventArgs e)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -50,6 +54,7 @@ namespace Database_gui_test
                 connection.Close();
             }
         }
+
         private void button10_Click(object sender, EventArgs e)
 
         {
@@ -62,71 +67,119 @@ namespace Database_gui_test
 
                 dgv2.DataSource = diagram2;
 
-
                 connection.Close();
             }
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            string input = textBox14.Text;
+            string query = input;
+            //string queryins = textBox14.Text;
+            SqlException exception3 = new SqlException($"Fejl i SQL, ret i teksten og prøv igen :)");
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    if (input.StartsWith("S"))
+                    {
+                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                            cmd.ExecuteNonQuery();
+                        label33.Text = $"{query}";
+                    }
+                    else
+                    {
+                        SqlDataAdapter data3 = new SqlDataAdapter(query, connection);
+                        DataTable diagram3 = new DataTable();
+                        data3.Fill(diagram3);
+                        dataGridView1.DataSource = diagram3;
+                        
+                    }
+
+                    label33.Text = $"{query}";
+                    connection.Close();
+                }
+            }
+            catch (System.Data.SqlClient.SqlException)
+            {
+
+                label32.Text = $"{exception3.Message}";
+
+                var t = new Timer();
+                t.Interval = sec; // it will Tick in 3 seconds
+                t.Tick += (s, e) =>
+                {
+                    label32.Text = "";
+                    t.Stop();
+                };
+                t.Start();
+            }
+
+
+
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
             SqlException exception1 = new SqlException($"ID {textBox1.Text} eksistere allerede");
 
-                if (textBox1.Text == "" || textBox2.Text == "" || textBox3.Text == "")
+            if (textBox1.Text == "" || textBox2.Text == "" || textBox3.Text == "")
+            {
+                label6.Text = "Udfyld venligst felterne";
+
+                var t = new Timer();
+                t.Interval = sec; // it will Tick in 3 seconds
+                t.Tick += (s, e) =>
                 {
-                    label6.Text = "Udfyld venligst felterne";
-
-                    var t = new Timer();
-                    t.Interval = sec; // it will Tick in 3 seconds
-                    t.Tick += (s, e) =>
-                    {
-                        label6.Text = "";
-                        t.Stop();
-                    };
-                    t.Start();
-                }
-                else
+                    label6.Text = "";
+                    t.Stop();
+                };
+                t.Start();
+            }
+            else
+            {
+                string query = "INSERT INTO DemoHotel (Hotel_No, Name, Address) VALUES(" + textBox1.Text + ",'" +
+                               textBox2.Text + "', '" + textBox3.Text + "');";
+                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    string query = "INSERT INTO DemoHotel (Hotel_No, Name, Address) VALUES(" + textBox1.Text + ",'" +
-                                   textBox2.Text + "', '" + textBox3.Text + "');";
-                    using (SqlConnection con = new SqlConnection(connectionString))
-                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    try
                     {
-                        try
+                        con.Open();
+                        object o = cmd.ExecuteReader();
+
+                        label7.Text = "Tabel er blevet indsat";
+
+                        var t = new Timer();
+                        t.Interval = sec; // it will Tick in 3 seconds
+                        t.Tick += (s, e) =>
                         {
-                            con.Open();
-                            object o = cmd.ExecuteReader();
+                            label7.Text = "";
+                            t.Stop();
+                        };
+                        t.Start();
 
-                            label7.Text = "Tabel er blevet indsat";
+                        con.Close();
+                    }
+                    catch (System.Data.SqlClient.SqlException)
+                    {
+                        label6.Text = $"{exception1.Message}";
 
-                            var t = new Timer();
-                            t.Interval = sec; // it will Tick in 3 seconds
-                            t.Tick += (s, e) =>
-                            {
-                                label7.Text = "";
-                                t.Stop();
-                            };
-                            t.Start();
-
-                            con.Close();
-                        }
-                        catch (System.Data.SqlClient.SqlException)
+                        var t = new Timer();
+                        t.Interval = sec; // it will Tick in 3 seconds
+                        t.Tick += (s, e) =>
                         {
-                            label6.Text = $"{exception1.Message}";
+                            label6.Text = "";
+                            t.Stop();
+                        };
+                        t.Start();
 
-                            var t = new Timer();
-                            t.Interval = sec; // it will Tick in 3 seconds
-                            t.Tick += (s, e) =>
-                            {
-                                label6.Text = "";
-                                t.Stop();
-                            };
-                            t.Start();
+                        con.Close();
 
-                            con.Close();
-
-                        }
                     }
                 }
+            }
         }
 
         void button2_Click(object sender, EventArgs e)
@@ -146,8 +199,10 @@ namespace Database_gui_test
             }
             else
             {
-                string query = "Update DemoHotel SET Hotel_No = " + this.textBox1.Text + ", Name =  '" + this.textBox2.Text +
-                               "', Address =  '" + this.textBox3.Text + "'  WHERE Hotel_No =" + this.textBox1.Text + ";";
+                string query = "Update DemoHotel SET Hotel_No = " + this.textBox1.Text + ", Name =  '" +
+                               this.textBox2.Text +
+                               "', Address =  '" + this.textBox3.Text + "'  WHERE Hotel_No =" + this.textBox1.Text +
+                               ";";
                 using (SqlConnection con = new SqlConnection(connectionString))
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -239,50 +294,54 @@ namespace Database_gui_test
             dateTimePicker2.Format = DateTimePickerFormat.Custom;
             dateTimePicker2.CustomFormat = "yyyy-dd-MM";
         }
+
         void FillCombo1()
-            {
-                SqlConnection con = new SqlConnection(
-                    "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Hotel; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False");
-                SqlCommand command7 = new SqlCommand("Select * from DemoHotel; ", con);
-                SqlDataReader myReader;
-                con.Open();
-                myReader = command7.ExecuteReader();
+        {
+            SqlConnection con = new SqlConnection(
+                "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Hotel; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False");
+            SqlCommand command7 = new SqlCommand("Select * from DemoHotel; ", con);
+            SqlDataReader myReader;
+            con.Open();
+            myReader = command7.ExecuteReader();
             while (myReader.Read())
-                {
-                    int sName = myReader.GetInt32("Hotel_No");
+            {
+                int sName = myReader.GetInt32("Hotel_No");
                 //string sName = myReader.GetString("Name");
                 comboBox3.Items.Add(sName);
-                }
+            }
 
-            }
-        void FillCombo2()
-            {
-                SqlConnection con = new SqlConnection(
-                    "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Hotel; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False");
-                SqlCommand command8 = new SqlCommand("Select * from DemoGuest; ", con);
-                SqlDataReader myReader;
-                con.Open();
-                myReader = command8.ExecuteReader(); 
-                while (myReader.Read()) 
-                {
-                    int sName = myReader.GetInt32("Guest_No");
-                    comboBox4.Items.Add(sName);
-                }
-            }
-        void FillCombo3()
-            {
-                SqlConnection con = new SqlConnection(
-                    "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Hotel; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False");
-                SqlCommand command9 = new SqlCommand("Select * from DemoRoom; ", con);
-                SqlDataReader myReader;
-                con.Open();
-                myReader = command9.ExecuteReader();
-                while (myReader.Read())
-                {
-                    int sName = myReader.GetInt32("Room_No");
-                    comboBox5.Items.Add(sName);
-                }
         }
+
+        void FillCombo2()
+        {
+            SqlConnection con = new SqlConnection(
+                "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Hotel; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False");
+            SqlCommand command8 = new SqlCommand("Select * from DemoGuest; ", con);
+            SqlDataReader myReader;
+            con.Open();
+            myReader = command8.ExecuteReader();
+            while (myReader.Read())
+            {
+                int sName = myReader.GetInt32("Guest_No");
+                comboBox4.Items.Add(sName);
+            }
+        }
+
+        void FillCombo3()
+        {
+            SqlConnection con = new SqlConnection(
+                "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Hotel; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False");
+            SqlCommand command9 = new SqlCommand("Select * from DemoRoom; ", con);
+            SqlDataReader myReader;
+            con.Open();
+            myReader = command9.ExecuteReader();
+            while (myReader.Read())
+            {
+                int sName = myReader.GetInt32("Room_No");
+                comboBox5.Items.Add(sName);
+            }
+        }
+
         void FillCombo4()
         {
             SqlConnection con = new SqlConnection(
@@ -298,6 +357,7 @@ namespace Database_gui_test
                 comboBox1.Items.Add(sName);
             }
         }
+
         void FillCombo5()
         {
             SqlConnection con = new SqlConnection(
@@ -469,7 +529,8 @@ namespace Database_gui_test
                             string query =
                                 "SET IDENTITY_INSERT DemoBooking ON INSERT INTO DemoBooking (Booking_id, Hotel_No, Guest_No, Date_From, Date_To, Room_No) VALUES(" +
                                 textBox7.Text + "," + comboBox3.Text + ", " + comboBox4.Text + ", '" +
-                                dateTimePicker1.Value.Date.ToString() + "' , '" + dateTimePicker2.Value.Date.ToString() +
+                                dateTimePicker1.Value.Date.ToString() + "' , '" +
+                                dateTimePicker2.Value.Date.ToString() +
                                 "', " + comboBox5.Text + ") SET IDENTITY_INSERT DemoBooking OFF;";
                             using (SqlConnection con = new SqlConnection(connectionString))
                             using (SqlCommand cmd = new SqlCommand(query, con))
@@ -542,9 +603,10 @@ namespace Database_gui_test
             {
                 try
                 {
-                    if (textBox9.Text =="S" || textBox9.Text=="D" || textBox9.Text=="F")
+                    if (textBox9.Text == "S" || textBox9.Text == "D" || textBox9.Text == "F")
                     {
-                        string query = "INSERT INTO DemoRoom (Room_No, Hotel_No, Types, Price) VALUES(" + textBox11.Text +
+                        string query = "INSERT INTO DemoRoom (Room_No, Hotel_No, Types, Price) VALUES(" +
+                                       textBox11.Text +
                                        "," + comboBox1.Text + ", '" + textBox9.Text + "', " + textBox8.Text + ");";
                         using (SqlConnection con = new SqlConnection(connectionString))
                         using (SqlCommand cmd = new SqlCommand(query, con))
@@ -663,7 +725,9 @@ namespace Database_gui_test
                 {
                     try
                     {
-                        string query = "Update DemoRoom SET Room_No = " + this.textBox11.Text + ", Hotel_No =  '" + this.comboBox1.Text + "', Types =  '" + this.textBox9.Text + "', Price = " + this.textBox8.Text +
+                        string query = "Update DemoRoom SET Room_No = " + this.textBox11.Text + ", Hotel_No =  '" +
+                                       this.comboBox1.Text + "', Types =  '" + this.textBox9.Text + "', Price = " +
+                                       this.textBox8.Text +
                                        "  WHERE Room_No =" + this.textBox1.Text + ";";
                         using (SqlConnection con = new SqlConnection(connectionString))
                         using (SqlCommand cmd = new SqlCommand(query, con))
@@ -897,7 +961,8 @@ namespace Database_gui_test
 
                 try
                 {
-                    string query = "INSERT INTO DemoFacilities (Facilities_No, Hotel_No, Facilities, Price) VALUES(" + textBox10.Text + "," +
+                    string query = "INSERT INTO DemoFacilities (Facilities_No, Hotel_No, Facilities, Price) VALUES(" +
+                                   textBox10.Text + "," +
                                    comboBox6.Text + ", '" + textBox12.Text + "', " + textBox13.Text + ");";
                     using (SqlConnection con = new SqlConnection(connectionString))
                     using (SqlCommand cmd = new SqlCommand(query, con))
@@ -1036,6 +1101,7 @@ namespace Database_gui_test
                 }
             }
         }
+
         private void button16_Click(object sender, EventArgs e)
         {
             if (textBox7.Text == "")
@@ -1074,6 +1140,7 @@ namespace Database_gui_test
                 }
             }
         }
+
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
             string query = "Select Room_No from DemoRoom Where Hotel_No = " + comboBox3.Text + "; ";
@@ -1091,6 +1158,16 @@ namespace Database_gui_test
                     comboBox5.Items.Add(sName);
                 }
             }
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox14_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
