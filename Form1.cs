@@ -77,44 +77,49 @@ namespace Database_gui_test
             string query = input;
             //string queryins = textBox14.Text;
             SqlException exception3 = new SqlException($"Fejl i SQL, ret i teksten og prøv igen :)");
-            try
+            if (textBox14.Text == "")
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                label6.Text = "Udfyld venligst felterne";
+                try
                 {
-                    connection.Open();
-                    if (input.StartsWith("S"))
+                    using (SqlConnection connection = new SqlConnection(connectionString))
                     {
-                        using (SqlCommand cmd = new SqlCommand(query, connection))
-                            cmd.ExecuteNonQuery();
-                        label33.Text = $"{query}";
-                    }
-                    else
-                    {
-                        SqlDataAdapter data3 = new SqlDataAdapter(query, connection);
-                        DataTable diagram3 = new DataTable();
-                        data3.Fill(diagram3);
-                        dataGridView1.DataSource = diagram3;
-                        
-                    }
+                        connection.Open();
+                        if (input.StartsWith("S"))
+                        {
+                            using (SqlCommand cmd = new SqlCommand(query, connection))
+                                cmd.ExecuteNonQuery();
+                            label33.Text = $"{query}";
+                        }
+                        else
+                        {
+                            SqlDataAdapter data3 = new SqlDataAdapter(query, connection);
+                            DataTable diagram3 = new DataTable();
+                            data3.Fill(diagram3);
+                            dataGridView1.DataSource = diagram3;
 
-                    label33.Text = $"{query}";
-                    connection.Close();
+                        }
+
+                        label33.Text = $"{query}";
+                        connection.Close();
+                    }
+                }
+                catch (System.Data.SqlClient.SqlException)
+                {
+
+                    label32.Text = $"{exception3.Message}";
+
+                    var t = new Timer();
+                    t.Interval = sec; // it will Tick in 3 seconds
+                    t.Tick += (s, e) =>
+                    {
+                        label32.Text = "";
+                        t.Stop();
+                    };
+                    t.Start();
                 }
             }
-            catch (System.Data.SqlClient.SqlException)
-            {
 
-                label32.Text = $"{exception3.Message}";
-
-                var t = new Timer();
-                t.Interval = sec; // it will Tick in 3 seconds
-                t.Tick += (s, e) =>
-                {
-                    label32.Text = "";
-                    t.Stop();
-                };
-                t.Start();
-            }
 
 
 
@@ -272,58 +277,59 @@ namespace Database_gui_test
 
         void FillCombo()
         {
-            SqlConnection con = new SqlConnection(
-                "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Hotel; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False");
-            SqlCommand command6 = new SqlCommand("Select * from DemoHotel; ", con);
-            SqlCommand command7 = new SqlCommand("Select * from DemoHotel; ", con);
-            SqlDataReader myReader;
-            SqlDataReader myReader1;
-            con.Open();
-
-            myReader = command6.ExecuteReader();
-
-            while (myReader.Read())
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string sName = myReader.GetString("Name");
-                comboBox2.Items.Add(sName);
+                SqlCommand command6 = new SqlCommand("Select * from DemoHotel; ", con);
+                SqlDataReader myReader;
+                con.Open();
+
+                myReader = command6.ExecuteReader();
+
+                while (myReader.Read())
+                {
+                    string sName = myReader.GetString("Name");
+                    comboBox2.Items.Add(sName);
+                }
+
+                dateTimePicker1.Format = DateTimePickerFormat.Custom;
+                dateTimePicker1.CustomFormat = "yyyy-dd-MM";
+
+                dateTimePicker2.Format = DateTimePickerFormat.Custom;
+                dateTimePicker2.CustomFormat = "yyyy-dd-MM";
             }
-
-            dateTimePicker1.Format = DateTimePickerFormat.Custom;
-            dateTimePicker1.CustomFormat = "yyyy-dd-MM";
-
-            dateTimePicker2.Format = DateTimePickerFormat.Custom;
-            dateTimePicker2.CustomFormat = "yyyy-dd-MM";
         }
 
         void FillCombo1()
         {
-            SqlConnection con = new SqlConnection(
-                "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Hotel; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False");
-            SqlCommand command7 = new SqlCommand("Select * from DemoHotel; ", con);
-            SqlDataReader myReader;
-            con.Open();
-            myReader = command7.ExecuteReader();
-            while (myReader.Read())
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                int sName = myReader.GetInt32("Hotel_No");
-                //string sName = myReader.GetString("Name");
-                comboBox3.Items.Add(sName);
+                SqlCommand command7 = new SqlCommand("Select * from DemoHotel; ", con);
+                SqlDataReader myReader;
+                con.Open();
+                myReader = command7.ExecuteReader();
+                while (myReader.Read())
+                {
+                    int sName = myReader.GetInt32("Hotel_No");
+                    //string sName = myReader.GetString("Name");
+                    comboBox3.Items.Add(sName);
+                }
             }
 
         }
 
         void FillCombo2()
         {
-            SqlConnection con = new SqlConnection(
-                "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Hotel; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False");
-            SqlCommand command8 = new SqlCommand("Select * from DemoGuest; ", con);
-            SqlDataReader myReader;
-            con.Open();
-            myReader = command8.ExecuteReader();
-            while (myReader.Read())
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                int sName = myReader.GetInt32("Guest_No");
-                comboBox4.Items.Add(sName);
+                SqlCommand command8 = new SqlCommand("Select * from DemoGuest; ", con);
+                SqlDataReader myReader;
+                con.Open();
+                myReader = command8.ExecuteReader();
+                while (myReader.Read())
+                {
+                    int sName = myReader.GetInt32("Guest_No");
+                    comboBox4.Items.Add(sName);
+                }
             }
         }
 
@@ -344,33 +350,35 @@ namespace Database_gui_test
 
         void FillCombo4()
         {
-            SqlConnection con = new SqlConnection(
-                "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Hotel; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False");
-            SqlCommand command7 = new SqlCommand("Select * from DemoHotel; ", con);
-            SqlDataReader myReader;
-            con.Open();
-            myReader = command7.ExecuteReader();
-            while (myReader.Read())
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                int sName = myReader.GetInt32("Hotel_No");
-                //string sName = myReader.GetString("Name");
-                comboBox1.Items.Add(sName);
+                SqlCommand command7 = new SqlCommand("Select * from DemoHotel; ", con);
+                SqlDataReader myReader;
+                con.Open();
+                myReader = command7.ExecuteReader();
+                while (myReader.Read())
+                {
+                    int sName = myReader.GetInt32("Hotel_No");
+                    //string sName = myReader.GetString("Name");
+                    comboBox1.Items.Add(sName);
+                }
             }
         }
 
         void FillCombo5()
         {
-            SqlConnection con = new SqlConnection(
-                "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = Hotel; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False");
-            SqlCommand command7 = new SqlCommand("Select * from DemoHotel; ", con);
-            SqlDataReader myReader;
-            con.Open();
-            myReader = command7.ExecuteReader();
-            while (myReader.Read())
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                int sName = myReader.GetInt32("Hotel_No");
-                //string sName = myReader.GetString("Name");
-                comboBox6.Items.Add(sName);
+                SqlCommand command7 = new SqlCommand("Select * from DemoHotel; ", con);
+                SqlDataReader myReader;
+                con.Open();
+                myReader = command7.ExecuteReader();
+                while (myReader.Read())
+                {
+                    int sName = myReader.GetInt32("Hotel_No");
+                    //string sName = myReader.GetString("Name");
+                    comboBox6.Items.Add(sName);
+                }
             }
         }
 
