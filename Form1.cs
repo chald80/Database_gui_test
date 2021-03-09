@@ -33,6 +33,8 @@ namespace Database_gui_test
             label23.Text = "";
             label31.Text = "";
             label30.Text = "";
+            label32.Text = "";
+            label33.Text = "";
         }
 
         string connectionString =
@@ -79,7 +81,19 @@ namespace Database_gui_test
             SqlException exception3 = new SqlException($"Fejl i SQL, ret i teksten og prøv igen :)");
             if (textBox14.Text == "")
             {
-                label6.Text = "Udfyld venligst felterne";
+                label32.Text = "Udfyld venligst feltet";
+                var t = new Timer();
+                t.Interval = sec; // it will Tick in 3 seconds
+                t.Tick += (s, e) =>
+                {
+                    label32.Text = "";
+                    t.Stop();
+                };
+                t.Start();
+            }
+            else
+            {
+
                 try
                 {
                     using (SqlConnection connection = new SqlConnection(connectionString))
@@ -89,7 +103,12 @@ namespace Database_gui_test
                         {
                             using (SqlCommand cmd = new SqlCommand(query, connection))
                                 cmd.ExecuteNonQuery();
-                            label33.Text = $"{query}";
+
+                            SqlDataAdapter data2 = new SqlDataAdapter(query, connection);
+                            DataTable diagram2 = new DataTable();
+                            data2.Fill(diagram2);
+
+                            dataGridView1.DataSource = diagram2;
                         }
                         else
                         {
@@ -101,6 +120,14 @@ namespace Database_gui_test
                         }
 
                         label33.Text = $"{query}";
+                        var t = new Timer();
+                        t.Interval = sec; // it will Tick in 3 seconds
+                        t.Tick += (s, e) =>
+                        {
+                            label33.Text = "";
+                            t.Stop();
+                        };
+                        t.Start();
                         connection.Close();
                     }
                 }
@@ -1166,16 +1193,6 @@ namespace Database_gui_test
                     comboBox5.Items.Add(sName);
                 }
             }
-        }
-
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox14_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -1094,7 +1094,7 @@ namespace Database_gui_test
             this.label33.AutoSize = true;
             this.label33.Cursor = System.Windows.Forms.Cursors.Default;
             this.label33.ForeColor = System.Drawing.Color.LimeGreen;
-            this.label33.Location = new System.Drawing.Point(289, 12);
+            this.label33.Location = new System.Drawing.Point(51, 12);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(101, 20);
             this.label33.TabIndex = 37;
@@ -1114,12 +1114,13 @@ namespace Database_gui_test
             // 
             // textBox14
             // 
+            this.textBox14.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBox14.Location = new System.Drawing.Point(51, 35);
             this.textBox14.Multiline = true;
             this.textBox14.Name = "textBox14";
             this.textBox14.Size = new System.Drawing.Size(704, 83);
             this.textBox14.TabIndex = 3;
-            this.textBox14.TextChanged += new System.EventHandler(this.textBox14_TextChanged);
+            this.textBox14.Text = "Select * From DemoHotel";
             // 
             // dataGridView1
             // 
@@ -1135,9 +1136,9 @@ namespace Database_gui_test
             // 
             this.button15.Location = new System.Drawing.Point(340, 386);
             this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(123, 29);
+            this.button15.Size = new System.Drawing.Size(139, 29);
             this.button15.TabIndex = 1;
-            this.button15.Text = "Vis SQL string";
+            this.button15.Text = "Udfør SQL query";
             this.button15.UseVisualStyleBackColor = true;
             this.button15.Click += new System.EventHandler(this.button15_Click);
             // 
