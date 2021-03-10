@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Diagnostics.Eventing.Reader;
 using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Database_gui_test
 {
@@ -23,6 +24,11 @@ namespace Database_gui_test
             FillCombo2();
             FillCombo4();
             FillCombo5();
+            RundemoHotel();
+            RundemoGuest();
+            RunDemoBooking();
+            RunDemoFacilities();
+            RunDemoRooms();
             label6.Text = "";
             label7.Text = "";
             label18.Text = "";
@@ -41,6 +47,80 @@ namespace Database_gui_test
             "Data Source=178.155.224.44;Initial Catalog=Hotel;User ID=sa;Password=2021Sommer";
 
         private int sec = 3000;
+
+        #region RunTables
+
+        void RundemoHotel()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter data1 = new SqlDataAdapter("Select * from DemoHotel", connection);
+                connection.Open();
+                DataTable diagram1 = new DataTable();
+                data1.Fill(diagram1);
+
+                dgv1.DataSource = diagram1;
+                connection.Close();
+            }
+        }
+
+        void RundemoGuest()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter data2 = new SqlDataAdapter("Select * from  DemoGuest ", connection);
+                connection.Open();
+                DataTable diagram2 = new DataTable();
+                data2.Fill(diagram2);
+
+                dgv2.DataSource = diagram2;
+                connection.Close();
+            }
+        }
+
+        void RunDemoBooking()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter data3 = new SqlDataAdapter("Select * from  DemoBooking ", connection);
+                connection.Open();
+                DataTable diagram3 = new DataTable();
+                data3.Fill(diagram3);
+
+                dgv3.DataSource = diagram3;
+                connection.Close();
+            }
+        }
+
+        void RunDemoFacilities()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString)) 
+            {
+                SqlDataAdapter data4 = new SqlDataAdapter("Select * from  DemoFacilities ", connection);
+                connection.Open();
+                DataTable diagram4 = new DataTable();
+                data4.Fill(diagram4);
+
+                dgv4.DataSource = diagram4;
+                connection.Close();
+            }
+        }
+
+        void RunDemoRooms()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter data5 = new SqlDataAdapter("Select * from  DemoRoom ", connection);
+                connection.Open();
+                DataTable diagram5 = new DataTable();
+                data5.Fill(diagram5);
+
+                dgv5.DataSource = diagram5;
+                connection.Close();
+            }
+        }
+
+        #endregion
 
         #region FillCombo
 
@@ -174,20 +254,6 @@ namespace Database_gui_test
 
         #region Hotel
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter data1 = new SqlDataAdapter("Select * from DemoHotel", connection);
-                connection.Open();
-                DataTable diagram1 = new DataTable();
-                data1.Fill(diagram1);
-
-                dgv1.DataSource = diagram1;
-                connection.Close();
-            }
-        }
-
         private void button1_Click_1(object sender, EventArgs e)
         {
             SqlException exception1 = new SqlException($"ID {textBox1.Text} eksistere allerede");
@@ -216,6 +282,8 @@ namespace Database_gui_test
                     {
                         con.Open();
                         object o = cmd.ExecuteReader();
+
+                        RundemoHotel();
 
                         label7.Text = "Tabel er blevet indsat";
 
@@ -277,6 +345,8 @@ namespace Database_gui_test
                     con.Open();
                     object o = cmd.ExecuteReader();
 
+                    RundemoHotel();
+
                     label7.Text = $"{textBox2.Text} Tabel er blevet opdateret";
 
                     var t = new Timer();
@@ -317,6 +387,8 @@ namespace Database_gui_test
                     con.Open();
                     object o = cmd.ExecuteReader();
 
+                    RundemoHotel();
+
                     label7.Text = "Tabel er blevet slettet";
 
                     var t = new Timer();
@@ -335,22 +407,6 @@ namespace Database_gui_test
         #endregion
 
         #region Guest
-
-        private void button10_Click(object sender, EventArgs e)
-
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter data2 = new SqlDataAdapter("Select * from  DemoGuest ", connection);
-                connection.Open();
-                DataTable diagram2 = new DataTable();
-                data2.Fill(diagram2);
-
-                dgv2.DataSource = diagram2;
-
-                connection.Close();
-            }
-        }
 
         private void button21_Click(object sender, EventArgs e)
         {
@@ -382,6 +438,8 @@ namespace Database_gui_test
                     {
                         con.Open();
                         object o = cmd.ExecuteReader();
+
+                        RundemoGuest();
 
                         label22.Text = $"{textBox4.Text} Tabel er blevet opdateret";
 
@@ -442,6 +500,8 @@ namespace Database_gui_test
                         con.Open();
                         object o = cmd.ExecuteReader();
 
+                        RundemoGuest();
+
                         label22.Text = "Tabel er blevet indsat";
 
                         var t = new Timer();
@@ -495,6 +555,8 @@ namespace Database_gui_test
                     con.Open();
                     object o = cmd.ExecuteReader();
 
+                    RundemoGuest();
+
                     label22.Text = "Tabel er blevet slettet";
 
                     var t = new Timer();
@@ -514,20 +576,7 @@ namespace Database_gui_test
         #endregion
 
         #region Booking
-        private void button11_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter data3 = new SqlDataAdapter("Select * from  DemoBooking ", connection);
-                connection.Open();
-                DataTable diagram3 = new DataTable();
-                data3.Fill(diagram3);
-
-                dgv3.DataSource = diagram3;
-                connection.Close();
-            }
-        }
-
+        
         private void button14_Click(object sender, EventArgs e)
         {
             SqlException exception2 = new SqlException($"Der skete en fejl, prøv igen");
@@ -577,6 +626,8 @@ namespace Database_gui_test
                             {
                                 con.Open();
                                 object o = cmd.ExecuteReader();
+
+                                RunDemoBooking();
 
                                 label19.Text = "Tabel er blevet indsat";
 
@@ -646,6 +697,8 @@ namespace Database_gui_test
                     con.Open();
                     object o = cmd.ExecuteReader();
 
+                    RunDemoBooking();
+
                     label19.Text = "Tabel er blevet slettet";
 
                     var t = new Timer();
@@ -664,19 +717,6 @@ namespace Database_gui_test
         #endregion
 
         #region Facilities
-        private void button12_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter data4 = new SqlDataAdapter("Select * from  DemoFacilities ", connection);
-                connection.Open();
-                DataTable diagram4 = new DataTable();
-                data4.Fill(diagram4);
-
-                dgv4.DataSource = diagram4;
-                connection.Close();
-            }
-        }
 
         private void button23_Click(object sender, EventArgs e)
         {
@@ -708,6 +748,8 @@ namespace Database_gui_test
                     {
                         con.Open();
                         object o = cmd.ExecuteReader();
+
+                        RunDemoFacilities();
 
                         label30.Text = "Tabel er blevet indsat";
 
@@ -772,6 +814,8 @@ namespace Database_gui_test
                         con.Open();
                         object o = cmd.ExecuteReader();
 
+                        RunDemoFacilities();
+
                         label30.Text = $"{textBox10.Text} Tabel er blevet opdateret";
 
                         var t = new Timer();
@@ -824,6 +868,8 @@ namespace Database_gui_test
                     con.Open();
                     object o = cmd.ExecuteReader();
 
+                    RunDemoFacilities();
+
                     label30.Text = "Tabel er blevet slettet";
 
                     var t = new Timer();
@@ -842,20 +888,6 @@ namespace Database_gui_test
         #endregion
 
         #region Rooms
-
-        private void button13_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter data5 = new SqlDataAdapter("Select * from  DemoRoom ", connection);
-                connection.Open();
-                DataTable diagram5 = new DataTable();
-                data5.Fill(diagram5);
-
-                dgv5.DataSource = diagram5;
-                connection.Close();
-            }
-        }
 
         private void button17_Click(object sender, EventArgs e)
         {
@@ -888,6 +920,8 @@ namespace Database_gui_test
                         {
                             con.Open();
                             object o = cmd.ExecuteReader();
+
+                            RunDemoRooms();
 
                             label24.Text = "Tabel er blevet indsat";
 
@@ -970,6 +1004,8 @@ namespace Database_gui_test
                             con.Open();
                             object o = cmd.ExecuteReader();
 
+                            RunDemoRooms();
+
                             label24.Text = $"{textBox11.Text} Tabel er blevet opdateret";
 
                             var t = new Timer();
@@ -1036,6 +1072,8 @@ namespace Database_gui_test
                 {
                     con.Open();
                     object o = cmd.ExecuteReader();
+
+                    RunDemoRooms();
 
                     label24.Text = "Tabel er blevet slettet";
 

@@ -30,7 +30,6 @@ namespace Database_gui_test
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.Diagram = new System.Windows.Forms.Button();
             this.dgv1 = new System.Windows.Forms.DataGridView();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -62,7 +61,6 @@ namespace Database_gui_test
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.button10 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.dgv2 = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -82,7 +80,6 @@ namespace Database_gui_test
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.textBox7 = new System.Windows.Forms.TextBox();
-            this.button11 = new System.Windows.Forms.Button();
             this.dgv3 = new System.Windows.Forms.DataGridView();
             this.button7 = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
@@ -99,7 +96,6 @@ namespace Database_gui_test
             this.button23 = new System.Windows.Forms.Button();
             this.button24 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
-            this.button12 = new System.Windows.Forms.Button();
             this.dgv4 = new System.Windows.Forms.DataGridView();
             this.button8 = new System.Windows.Forms.Button();
             this.tabPage5 = new System.Windows.Forms.TabPage();
@@ -116,7 +112,6 @@ namespace Database_gui_test
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.textBox8 = new System.Windows.Forms.TextBox();
-            this.button13 = new System.Windows.Forms.Button();
             this.dgv5 = new System.Windows.Forms.DataGridView();
             this.button9 = new System.Windows.Forms.Button();
             this.tabPage6 = new System.Windows.Forms.TabPage();
@@ -143,16 +138,6 @@ namespace Database_gui_test
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // Diagram
-            // 
-            this.Diagram.Location = new System.Drawing.Point(494, 365);
-            this.Diagram.Name = "Diagram";
-            this.Diagram.Size = new System.Drawing.Size(157, 29);
-            this.Diagram.TabIndex = 1;
-            this.Diagram.Text = "Opdater visning";
-            this.Diagram.UseVisualStyleBackColor = true;
-            this.Diagram.Click += new System.EventHandler(this.button1_Click);
             // 
             // dgv1
             // 
@@ -333,7 +318,6 @@ namespace Database_gui_test
             this.tabPage1.Controls.Add(this.button4);
             this.tabPage1.Controls.Add(this.dgv1);
             this.tabPage1.Controls.Add(this.label7);
-            this.tabPage1.Controls.Add(this.Diagram);
             this.tabPage1.Controls.Add(this.textBox2);
             this.tabPage1.Controls.Add(this.label6);
             this.tabPage1.Controls.Add(this.label2);
@@ -366,7 +350,6 @@ namespace Database_gui_test
             this.tabPage2.Controls.Add(this.textBox5);
             this.tabPage2.Controls.Add(this.textBox4);
             this.tabPage2.Controls.Add(this.label5);
-            this.tabPage2.Controls.Add(this.button10);
             this.tabPage2.Controls.Add(this.button6);
             this.tabPage2.Controls.Add(this.dgv2);
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
@@ -483,16 +466,6 @@ namespace Database_gui_test
             this.label5.TabIndex = 15;
             this.label5.Text = "ID Nummer";
             // 
-            // button10
-            // 
-            this.button10.Location = new System.Drawing.Point(494, 365);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(157, 29);
-            this.button10.TabIndex = 14;
-            this.button10.Text = "Opdater visning";
-            this.button10.UseVisualStyleBackColor = true;
-            this.button10.Click += new System.EventHandler(this.button10_Click);
-            // 
             // button6
             // 
             this.button6.Location = new System.Drawing.Point(689, 389);
@@ -531,7 +504,6 @@ namespace Database_gui_test
             this.tabPage3.Controls.Add(this.dateTimePicker2);
             this.tabPage3.Controls.Add(this.dateTimePicker1);
             this.tabPage3.Controls.Add(this.textBox7);
-            this.tabPage3.Controls.Add(this.button11);
             this.tabPage3.Controls.Add(this.dgv3);
             this.tabPage3.Controls.Add(this.button7);
             this.tabPage3.Location = new System.Drawing.Point(4, 29);
@@ -687,16 +659,6 @@ namespace Database_gui_test
             this.textBox7.TabIndex = 17;
             this.textBox7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox7_KeyPress);
             // 
-            // button11
-            // 
-            this.button11.Location = new System.Drawing.Point(494, 365);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(157, 29);
-            this.button11.TabIndex = 16;
-            this.button11.Text = "Opdater visning";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
-            // 
             // dgv3
             // 
             this.dgv3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -732,7 +694,6 @@ namespace Database_gui_test
             this.tabPage4.Controls.Add(this.button23);
             this.tabPage4.Controls.Add(this.button24);
             this.tabPage4.Controls.Add(this.button25);
-            this.tabPage4.Controls.Add(this.button12);
             this.tabPage4.Controls.Add(this.dgv4);
             this.tabPage4.Controls.Add(this.button8);
             this.tabPage4.Location = new System.Drawing.Point(4, 29);
@@ -865,16 +826,6 @@ namespace Database_gui_test
             this.button25.UseVisualStyleBackColor = true;
             this.button25.Click += new System.EventHandler(this.button25_Click);
             // 
-            // button12
-            // 
-            this.button12.Location = new System.Drawing.Point(494, 365);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(157, 29);
-            this.button12.TabIndex = 16;
-            this.button12.Text = "Opdater visning";
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
-            // 
             // dgv4
             // 
             this.dgv4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -910,7 +861,6 @@ namespace Database_gui_test
             this.tabPage5.Controls.Add(this.textBox11);
             this.tabPage5.Controls.Add(this.textBox9);
             this.tabPage5.Controls.Add(this.textBox8);
-            this.tabPage5.Controls.Add(this.button13);
             this.tabPage5.Controls.Add(this.dgv5);
             this.tabPage5.Controls.Add(this.button9);
             this.tabPage5.Location = new System.Drawing.Point(4, 29);
@@ -1042,16 +992,6 @@ namespace Database_gui_test
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(215, 27);
             this.textBox8.TabIndex = 17;
-            // 
-            // button13
-            // 
-            this.button13.Location = new System.Drawing.Point(494, 365);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(157, 29);
-            this.button13.TabIndex = 16;
-            this.button13.Text = "Opdater visning";
-            this.button13.UseVisualStyleBackColor = true;
-            this.button13.Click += new System.EventHandler(this.button13_Click);
             // 
             // dgv5
             // 
@@ -1190,7 +1130,6 @@ namespace Database_gui_test
         }
 
         #endregion
-        private System.Windows.Forms.Button Diagram;
         private System.Windows.Forms.DataGridView dgv1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button1;
@@ -1224,10 +1163,6 @@ namespace Database_gui_test
         private System.Windows.Forms.DataGridView dgv3;
         private System.Windows.Forms.DataGridView dgv4;
         private System.Windows.Forms.DataGridView dgv5;
-        private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.Button button11;
-        private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.Button button13;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label9;
