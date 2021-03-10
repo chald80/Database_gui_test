@@ -42,283 +42,7 @@ namespace Database_gui_test
 
         private int sec = 3000;
 
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter data1 = new SqlDataAdapter("Select * from DemoHotel", connection);
-                connection.Open();
-                DataTable diagram1 = new DataTable();
-                data1.Fill(diagram1);
-
-                dgv1.DataSource = diagram1;
-                connection.Close();
-            }
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter data2 = new SqlDataAdapter("Select * from  DemoGuest ", connection);
-                connection.Open();
-                DataTable diagram2 = new DataTable();
-                data2.Fill(diagram2);
-
-                dgv2.DataSource = diagram2;
-
-                connection.Close();
-            }
-        }
-
-        private void button15_Click(object sender, EventArgs e)
-        {
-            string input = textBox14.Text;
-            string query = input;
-            //string queryins = textBox14.Text;
-            SqlException exception3 = new SqlException($"Fejl i SQL, ret i teksten og prøv igen :)");
-            if (textBox14.Text == "")
-            {
-                label32.Text = "Udfyld venligst feltet";
-                var t = new Timer();
-                t.Interval = sec; // it will Tick in 3 seconds
-                t.Tick += (s, e) =>
-                {
-                    label32.Text = "";
-                    t.Stop();
-                };
-                t.Start();
-            }
-            else
-            {
-                if (input.StartsWith("Greate") || input.StartsWith("greate"))
-                {
-                    label32.Text = "Det er ikke tilladt at lave en ny tabel";
-
-                    var t = new Timer();
-                    t.Interval = sec; // it will Tick in 3 seconds
-                    t.Tick += (s, e) =>
-                    {
-                        label32.Text = "";
-                        t.Stop();
-                    };
-                    t.Start();
-
-                }
-                else
-                {
-                    try
-                    {
-                        using (SqlConnection connection = new SqlConnection(connectionString))
-                        {
-                            connection.Open();
-                            if (input.StartsWith("Select") || input.StartsWith("select"))
-                            {
-                                using (SqlCommand cmd = new SqlCommand(query, connection))
-                                    cmd.ExecuteNonQuery();
-
-                                SqlDataAdapter data2 = new SqlDataAdapter(query, connection);
-                                DataTable diagram2 = new DataTable();
-                                data2.Fill(diagram2);
-
-                                dataGridView1.DataSource = diagram2;
-                            }
-                            else
-                            {
-                                SqlDataAdapter data3 = new SqlDataAdapter(query, connection);
-                                DataTable diagram3 = new DataTable();
-                                data3.Fill(diagram3);
-                                dataGridView1.DataSource = diagram3;
-
-                            }
-
-                            label33.Text = $"{query}";
-                            var t = new Timer();
-                            t.Interval = sec; // it will Tick in 3 seconds
-                            t.Tick += (s, e) =>
-                            {
-                                label33.Text = "";
-                                t.Stop();
-                            };
-                            t.Start();
-                            connection.Close();
-                        }
-                    }
-                    catch (System.Data.SqlClient.SqlException)
-                    {
-
-                        label32.Text = $"{exception3.Message}";
-
-                        var t = new Timer();
-                        t.Interval = sec; // it will Tick in 3 seconds
-                        t.Tick += (s, e) =>
-                        {
-                            label32.Text = "";
-                            t.Stop();
-                        };
-                        t.Start();
-                    }
-                }
-
-                
-            }
-
-
-
-
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            SqlException exception1 = new SqlException($"ID {textBox1.Text} eksistere allerede");
-
-            if (textBox1.Text == "" || textBox2.Text == "" || textBox3.Text == "")
-            {
-                label6.Text = "Udfyld venligst felterne";
-
-                var t = new Timer();
-                t.Interval = sec; // it will Tick in 3 seconds
-                t.Tick += (s, e) =>
-                {
-                    label6.Text = "";
-                    t.Stop();
-                };
-                t.Start();
-            }
-            else
-            {
-                string query = "INSERT INTO DemoHotel (Hotel_No, Name, Address) VALUES(" + textBox1.Text + ",'" +
-                               textBox2.Text + "', '" + textBox3.Text + "');";
-                using (SqlConnection con = new SqlConnection(connectionString))
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    try
-                    {
-                        con.Open();
-                        object o = cmd.ExecuteReader();
-
-                        label7.Text = "Tabel er blevet indsat";
-
-                        var t = new Timer();
-                        t.Interval = sec; // it will Tick in 3 seconds
-                        t.Tick += (s, e) =>
-                        {
-                            label7.Text = "";
-                            t.Stop();
-                        };
-                        t.Start();
-
-                        con.Close();
-                    }
-                    catch (System.Data.SqlClient.SqlException)
-                    {
-                        label6.Text = $"{exception1.Message}";
-
-                        var t = new Timer();
-                        t.Interval = sec; // it will Tick in 3 seconds
-                        t.Tick += (s, e) =>
-                        {
-                            label6.Text = "";
-                            t.Stop();
-                        };
-                        t.Start();
-
-                        con.Close();
-
-                    }
-                }
-            }
-        }
-
-        void button2_Click(object sender, EventArgs e)
-        {
-            if (textBox1.Text == "" || textBox2.Text == "" || textBox3.Text == "")
-            {
-                label6.Text = "Udfyld venligst felterne";
-
-                var t = new Timer();
-                t.Interval = sec; // it will Tick in 3 seconds
-                t.Tick += (s, e) =>
-                {
-                    label6.Text = "";
-                    t.Stop();
-                };
-                t.Start();
-            }
-            else
-            {
-                string query = "Update DemoHotel SET Hotel_No = " + this.textBox1.Text + ", Name =  '" +
-                               this.textBox2.Text +
-                               "', Address =  '" + this.textBox3.Text + "'  WHERE Hotel_No =" + this.textBox1.Text +
-                               ";";
-                using (SqlConnection con = new SqlConnection(connectionString))
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    con.Open();
-                    object o = cmd.ExecuteReader();
-
-                    label7.Text = $"{textBox2.Text} Tabel er blevet opdateret";
-
-                    var t = new Timer();
-                    t.Interval = sec; // it will Tick in 3 seconds
-                    t.Tick += (s, e) =>
-                    {
-                        label7.Text = "";
-                        t.Stop();
-                    };
-                    t.Start();
-                    con.Close();
-                }
-            }
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-
-            if (textBox1.Text == "")
-            {
-                label6.Text = "Udfyld venligst ID feltet";
-
-                var t = new Timer();
-                t.Interval = sec; // it will Tick in 3 seconds
-                t.Tick += (s, e) =>
-                {
-                    label6.Text = "";
-                    t.Stop();
-                };
-                t.Start();
-            }
-            else
-            {
-                string query = "DELETE FROM DemoHotel WHERE Hotel_No = (" + textBox1.Text + ");";
-                using (SqlConnection con = new SqlConnection(connectionString))
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    con.Open();
-                    object o = cmd.ExecuteReader();
-
-                    label7.Text = "Tabel er blevet slettet";
-
-                    var t = new Timer();
-                    t.Interval = sec; // it will Tick in 3 seconds
-                    t.Tick += (s, e) =>
-                    {
-                        label7.Text = "";
-                        t.Stop();
-                    };
-                    t.Start();
-
-                    con.Close();
-                }
-            }
-        }
+        #region FillCombo
 
         void FillCombo()
         {
@@ -427,38 +151,369 @@ namespace Database_gui_test
             }
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox2.SelectedIndex == -1)
+            string query = "Select Room_No from DemoRoom Where Hotel_No = " + comboBox3.Text + "; ";
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
             {
-                textBox2.Text = string.Empty;
+                SqlDataReader myReader;
+                con.Open();
+                myReader = cmd.ExecuteReader();
+                comboBox5.Items.Clear();
+                while (myReader.Read())
+                {
+                    int sName = myReader.GetInt32("Room_No");
+                    //string sName = myReader.GetString("Name");
+                    comboBox5.Items.Add(sName);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Hotel
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter data1 = new SqlDataAdapter("Select * from DemoHotel", connection);
+                connection.Open();
+                DataTable diagram1 = new DataTable();
+                data1.Fill(diagram1);
+
+                dgv1.DataSource = diagram1;
+                connection.Close();
+            }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            SqlException exception1 = new SqlException($"ID {textBox1.Text} eksistere allerede");
+
+            if (textBox1.Text == "" || textBox2.Text == "" || textBox3.Text == "")
+            {
+                label6.Text = "Udfyld venligst felterne";
+
+                var t = new Timer();
+                t.Interval = sec; // it will Tick in 3 seconds
+                t.Tick += (s, e) =>
+                {
+                    label6.Text = "";
+                    t.Stop();
+                };
+                t.Start();
             }
             else
             {
-                textBox2.Text = comboBox2.SelectedItem.ToString();
+                string query = "INSERT INTO DemoHotel (Hotel_No, Name, Address) VALUES(" + textBox1.Text + ",'" +
+                               textBox2.Text + "', '" + textBox3.Text + "');";
+                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    try
+                    {
+                        con.Open();
+                        object o = cmd.ExecuteReader();
+
+                        label7.Text = "Tabel er blevet indsat";
+
+                        var t = new Timer();
+                        t.Interval = sec; // it will Tick in 3 seconds
+                        t.Tick += (s, e) =>
+                        {
+                            label7.Text = "";
+                            t.Stop();
+                        };
+                        t.Start();
+
+                        con.Close();
+                    }
+                    catch (System.Data.SqlClient.SqlException)
+                    {
+                        label6.Text = $"{exception1.Message}";
+
+                        var t = new Timer();
+                        t.Interval = sec; // it will Tick in 3 seconds
+                        t.Tick += (s, e) =>
+                        {
+                            label6.Text = "";
+                            t.Stop();
+                        };
+                        t.Start();
+
+                        con.Close();
+
+                    }
+                }
             }
         }
 
-        private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
+        void button2_Click(object sender, EventArgs e)
         {
-            char ch = e.KeyChar;
-
-            if (!char.IsLetter(ch) && ch != 8)
+            if (textBox1.Text == "" || textBox2.Text == "" || textBox3.Text == "")
             {
-                e.Handled = true;
+                label6.Text = "Udfyld venligst felterne";
+
+                var t = new Timer();
+                t.Interval = sec; // it will Tick in 3 seconds
+                t.Tick += (s, e) =>
+                {
+                    label6.Text = "";
+                    t.Stop();
+                };
+                t.Start();
+            }
+            else
+            {
+                string query = "Update DemoHotel SET Hotel_No = " + this.textBox1.Text + ", Name =  '" +
+                               this.textBox2.Text +
+                               "', Address =  '" + this.textBox3.Text + "'  WHERE Hotel_No =" + this.textBox1.Text +
+                               ";";
+                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    object o = cmd.ExecuteReader();
+
+                    label7.Text = $"{textBox2.Text} Tabel er blevet opdateret";
+
+                    var t = new Timer();
+                    t.Interval = sec; // it will Tick in 3 seconds
+                    t.Tick += (s, e) =>
+                    {
+                        label7.Text = "";
+                        t.Stop();
+                    };
+                    t.Start();
+                    con.Close();
+                }
             }
         }
 
-        private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
-            char ch = e.KeyChar;
 
-            if (!char.IsLetter(ch) && ch != 8)
+            if (textBox1.Text == "")
             {
-                e.Handled = true;
+                label6.Text = "Udfyld venligst ID feltet";
+
+                var t = new Timer();
+                t.Interval = sec; // it will Tick in 3 seconds
+                t.Tick += (s, e) =>
+                {
+                    label6.Text = "";
+                    t.Stop();
+                };
+                t.Start();
+            }
+            else
+            {
+                string query = "DELETE FROM DemoHotel WHERE Hotel_No = (" + textBox1.Text + ");";
+                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    object o = cmd.ExecuteReader();
+
+                    label7.Text = "Tabel er blevet slettet";
+
+                    var t = new Timer();
+                    t.Interval = sec; // it will Tick in 3 seconds
+                    t.Tick += (s, e) =>
+                    {
+                        label7.Text = "";
+                        t.Stop();
+                    };
+                    t.Start();
+
+                    con.Close();
+                }
+            }
+        }
+        #endregion
+
+        #region Guest
+
+        private void button10_Click(object sender, EventArgs e)
+
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter data2 = new SqlDataAdapter("Select * from  DemoGuest ", connection);
+                connection.Open();
+                DataTable diagram2 = new DataTable();
+                data2.Fill(diagram2);
+
+                dgv2.DataSource = diagram2;
+
+                connection.Close();
             }
         }
 
+        private void button21_Click(object sender, EventArgs e)
+        {
+            SqlException exception3 = new SqlException($"Der skete en fejl, prøv igen");
+
+            if (textBox4.Text == "" || textBox5.Text == "" || textBox6.Text == "")
+            {
+                label23.Text = "Udfyld venligst felterne";
+
+                var t = new Timer();
+                t.Interval = sec; // it will Tick in 3 seconds
+                t.Tick += (s, e) =>
+                {
+                    label23.Text = "";
+                    t.Stop();
+                };
+                t.Start();
+            }
+            else
+            {
+                try
+                {
+                    string query = "Update DemoGuest SET Guest_No = " + this.textBox4.Text +
+                                   ", Name =  '" + this.textBox5.Text +
+                                   "', Address =  '" + this.textBox6.Text +
+                                   "' WHERE Guest_No =" + this.textBox4.Text + ";";
+                    using (SqlConnection con = new SqlConnection(connectionString))
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        con.Open();
+                        object o = cmd.ExecuteReader();
+
+                        label22.Text = $"{textBox4.Text} Tabel er blevet opdateret";
+
+                        var t = new Timer();
+                        t.Interval = sec; // it will Tick in 3 seconds
+                        t.Tick += (s, e) =>
+                        {
+                            label22.Text = "";
+                            t.Stop();
+                        };
+                        t.Start();
+                        con.Close();
+                    }
+                }
+                catch (System.Data.SqlClient.SqlException)
+                {
+                    label23.Text = $"{exception3.Message}";
+
+                    var t = new Timer();
+                    t.Interval = sec; // it will Tick in 3 seconds
+                    t.Tick += (s, e) =>
+                    {
+                        label23.Text = "";
+                        t.Stop();
+                    };
+                    t.Start();
+                }
+            }
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            SqlException exception3 = new SqlException($"Der skete en fejl, prøv igen");
+
+            if (textBox4.Text == "" || textBox5.Text == "" || textBox6.Text == "")
+            {
+                label23.Text = "Udfyld venligst felterne";
+
+                var t = new Timer();
+                t.Interval = sec; // it will Tick in 3 seconds
+                t.Tick += (s, e) =>
+                {
+                    label23.Text = "";
+                    t.Stop();
+                };
+                t.Start();
+            }
+            else
+            {
+
+                try
+                {
+                    string query = "INSERT INTO DemoGuest (Guest_No, Name, Address) VALUES(" + textBox4.Text + ",'" +
+                                   textBox5.Text + "', '" + textBox6.Text + "');";
+                    using (SqlConnection con = new SqlConnection(connectionString))
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        con.Open();
+                        object o = cmd.ExecuteReader();
+
+                        label22.Text = "Tabel er blevet indsat";
+
+                        var t = new Timer();
+                        t.Interval = sec; // it will Tick in 3 seconds
+                        t.Tick += (s, e) =>
+                        {
+                            label22.Text = "";
+                            t.Stop();
+                        };
+                        t.Start();
+                        con.Close();
+                    }
+                }
+                catch (System.Data.SqlClient.SqlException)
+                {
+
+                    label23.Text = $"{exception3.Message}";
+
+                    var t = new Timer();
+                    t.Interval = sec; // it will Tick in 3 seconds
+                    t.Tick += (s, e) =>
+                    {
+                        label23.Text = "";
+                        t.Stop();
+                    };
+                    t.Start();
+                }
+            }
+        }
+        private void button22_Click(object sender, EventArgs e)
+        {
+            if (textBox4.Text == "")
+            {
+                label23.Text = "Udfyld venligst ID feltet";
+
+                var t = new Timer();
+                t.Interval = sec; // it will Tick in 3 seconds
+                t.Tick += (s, e) =>
+                {
+                    label23.Text = "";
+                    t.Stop();
+                };
+                t.Start();
+            }
+            else
+            {
+                string query = "DELETE FROM DemoGuest WHERE Guest_No = (" + textBox4.Text + ");";
+                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    object o = cmd.ExecuteReader();
+
+                    label22.Text = "Tabel er blevet slettet";
+
+                    var t = new Timer();
+                    t.Interval = sec; // it will Tick in 3 seconds
+                    t.Tick += (s, e) =>
+                    {
+                        label22.Text = "";
+                        t.Stop();
+                    };
+                    t.Start();
+                    con.Close();
+                }
+            }
+
+        }
+
+        #endregion
+
+        #region Booking
         private void button11_Click(object sender, EventArgs e)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -471,74 +526,6 @@ namespace Database_gui_test
                 dgv3.DataSource = diagram3;
                 connection.Close();
             }
-        }
-
-        private void button13_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter data5 = new SqlDataAdapter("Select * from  DemoRoom ", connection);
-                connection.Open();
-                DataTable diagram5 = new DataTable();
-                data5.Fill(diagram5);
-
-                dgv5.DataSource = diagram5;
-                connection.Close();
-            }
-        }
-
-        private void button12_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter data4 = new SqlDataAdapter("Select * from  DemoFacilities ", connection);
-                connection.Open();
-                DataTable diagram4 = new DataTable();
-                data4.Fill(diagram4);
-
-                dgv4.DataSource = diagram4;
-                connection.Close();
-            }
-        }
-
-        private void textBox7_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char ch = e.KeyChar;
-
-            if (!char.IsDigit(ch) && ch != 8)
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void textBox8_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char ch = e.KeyChar;
-
-            if (!char.IsDigit(ch) && ch != 8)
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
         }
 
         private void button14_Click(object sender, EventArgs e)
@@ -635,6 +622,241 @@ namespace Database_gui_test
             }
         }
 
+        private void button16_Click(object sender, EventArgs e)
+        {
+            if (textBox7.Text == "")
+            {
+                label18.Text = "Udfyld venligst ID feltet";
+
+                var t = new Timer();
+                t.Interval = sec; // it will Tick in 3 seconds
+                t.Tick += (s, e) =>
+                {
+                    label18.Text = "";
+                    t.Stop();
+                };
+                t.Start();
+            }
+            else
+            {
+                string query = "DELETE FROM DemoBooking WHERE Booking_id = (" + textBox7.Text + ");";
+                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    object o = cmd.ExecuteReader();
+
+                    label19.Text = "Tabel er blevet slettet";
+
+                    var t = new Timer();
+                    t.Interval = sec; // it will Tick in 3 seconds
+                    t.Tick += (s, e) =>
+                    {
+                        label19.Text = "";
+                        t.Stop();
+                    };
+                    t.Start();
+                    con.Close();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Facilities
+        private void button12_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter data4 = new SqlDataAdapter("Select * from  DemoFacilities ", connection);
+                connection.Open();
+                DataTable diagram4 = new DataTable();
+                data4.Fill(diagram4);
+
+                dgv4.DataSource = diagram4;
+                connection.Close();
+            }
+        }
+
+        private void button23_Click(object sender, EventArgs e)
+        {
+            SqlException exception3 = new SqlException($"Der skete en fejl, prøv igen");
+
+            if (textBox10.Text == "" || comboBox6.Text == "" || textBox12.Text == "" || textBox13.Text == "")
+            {
+                label31.Text = "Udfyld venligst felterne";
+
+                var t = new Timer();
+                t.Interval = sec; // it will Tick in 3 seconds
+                t.Tick += (s, e) =>
+                {
+                    label31.Text = "";
+                    t.Stop();
+                };
+                t.Start();
+            }
+            else
+            {
+
+                try
+                {
+                    string query = "INSERT INTO DemoFacilities (Facilities_No, Hotel_No, Facilities, Price) VALUES(" +
+                                   textBox10.Text + "," +
+                                   comboBox6.Text + ", '" + textBox12.Text + "', " + textBox13.Text + ");";
+                    using (SqlConnection con = new SqlConnection(connectionString))
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        con.Open();
+                        object o = cmd.ExecuteReader();
+
+                        label30.Text = "Tabel er blevet indsat";
+
+                        var t = new Timer();
+                        t.Interval = sec; // it will Tick in 3 seconds
+                        t.Tick += (s, e) =>
+                        {
+                            label30.Text = "";
+                            t.Stop();
+                        };
+                        t.Start();
+                        con.Close();
+                    }
+                }
+                catch (System.Data.SqlClient.SqlException)
+                {
+
+                    label31.Text = $"{exception3.Message}";
+
+                    var t = new Timer();
+                    t.Interval = sec; // it will Tick in 3 seconds
+                    t.Tick += (s, e) =>
+                    {
+                        label31.Text = "";
+                        t.Stop();
+                    };
+                    t.Start();
+                }
+            }
+        }
+
+        private void button24_Click(object sender, EventArgs e)
+        {
+            SqlException exception3 = new SqlException($"Der skete en fejl, prøv igen");
+
+            if (textBox10.Text == "" || comboBox6.Text == "" || textBox12.Text == "" || textBox13.Text == "")
+            {
+                label31.Text = "Udfyld venligst felterne";
+
+                var t = new Timer();
+                t.Interval = sec; // it will Tick in 3 seconds
+                t.Tick += (s, e) =>
+                {
+                    label31.Text = "";
+                    t.Stop();
+                };
+                t.Start();
+            }
+            else
+            {
+                try
+                {
+                    string query = "Update DemoFacilities SET Facilities_No = " +
+                                   this.textBox10.Text + ", Hotel_No =  " +
+                                   this.comboBox6.Text +
+                                   ", Facilities = '" + this.textBox12.Text + "', Price = " +
+                                   this.textBox13.Text + " WHERE Facilities_No =" +
+                                   this.textBox10.Text + ";";
+                    using (SqlConnection con = new SqlConnection(connectionString))
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        con.Open();
+                        object o = cmd.ExecuteReader();
+
+                        label30.Text = $"{textBox10.Text} Tabel er blevet opdateret";
+
+                        var t = new Timer();
+                        t.Interval = sec; // it will Tick in 3 seconds
+                        t.Tick += (s, e) =>
+                        {
+                            label30.Text = "";
+                            t.Stop();
+                        };
+                        t.Start();
+                        con.Close();
+                    }
+                }
+                catch (System.Data.SqlClient.SqlException)
+                {
+                    label31.Text = $"{exception3.Message}";
+
+                    var t = new Timer();
+                    t.Interval = sec; // it will Tick in 3 seconds
+                    t.Tick += (s, e) =>
+                    {
+                        label31.Text = "";
+                        t.Stop();
+                    };
+                    t.Start();
+                }
+            }
+        }
+        private void button25_Click(object sender, EventArgs e)
+        {
+            if (textBox10.Text == "")
+            {
+                label31.Text = "Udfyld venligst ID feltet";
+
+                var t = new Timer();
+                t.Interval = sec; // it will Tick in 3 seconds
+                t.Tick += (s, e) =>
+                {
+                    label31.Text = "";
+                    t.Stop();
+                };
+                t.Start();
+            }
+            else
+            {
+                string query = "DELETE FROM DemoFacilities WHERE Facilities_No = (" + textBox10.Text + ");";
+                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    object o = cmd.ExecuteReader();
+
+                    label30.Text = "Tabel er blevet slettet";
+
+                    var t = new Timer();
+                    t.Interval = sec; // it will Tick in 3 seconds
+                    t.Tick += (s, e) =>
+                    {
+                        label30.Text = "";
+                        t.Stop();
+                    };
+                    t.Start();
+
+                    con.Close();
+                }
+            }
+        }
+        #endregion
+
+        #region Rooms
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter data5 = new SqlDataAdapter("Select * from  DemoRoom ", connection);
+                connection.Open();
+                DataTable diagram5 = new DataTable();
+                data5.Fill(diagram5);
+
+                dgv5.DataSource = diagram5;
+                connection.Close();
+            }
+        }
+
         private void button17_Click(object sender, EventArgs e)
         {
             SqlException exception3 = new SqlException($"Der skete en fejl, prøv igen");
@@ -710,46 +932,6 @@ namespace Database_gui_test
                         t.Stop();
                     };
                     t.Start();
-                }
-            }
-        }
-
-        private void button19_Click(object sender, EventArgs e)
-        {
-            if (textBox11.Text == "")
-            {
-                label25.Text = "Udfyld venligst ID feltet";
-
-                var t = new Timer();
-                t.Interval = sec; // it will Tick in 3 seconds
-                t.Tick += (s, e) =>
-                {
-                    label25.Text = "";
-                    t.Stop();
-                };
-                t.Start();
-            }
-            else
-            {
-                string query = "DELETE FROM DemoRoom WHERE Room_No = (" + textBox11.Text + ");";
-                using (SqlConnection con = new SqlConnection(connectionString))
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    con.Open();
-                    object o = cmd.ExecuteReader();
-
-                    label24.Text = "Tabel er blevet slettet";
-
-                    var t = new Timer();
-                    t.Interval = sec; // it will Tick in 3 seconds
-                    t.Tick += (s, e) =>
-                    {
-                        label24.Text = "";
-                        t.Stop();
-                    };
-                    t.Start();
-
-                    con.Close();
                 }
             }
         }
@@ -831,259 +1013,37 @@ namespace Database_gui_test
                 }
             }
         }
-
-        private void button20_Click(object sender, EventArgs e)
+        private void button19_Click(object sender, EventArgs e)
         {
-            SqlException exception3 = new SqlException($"Der skete en fejl, prøv igen");
-
-            if (textBox4.Text == "" || textBox5.Text == "" || textBox6.Text == "")
+            if (textBox11.Text == "")
             {
-                label23.Text = "Udfyld venligst felterne";
+                label25.Text = "Udfyld venligst ID feltet";
 
                 var t = new Timer();
                 t.Interval = sec; // it will Tick in 3 seconds
                 t.Tick += (s, e) =>
                 {
-                    label23.Text = "";
+                    label25.Text = "";
                     t.Stop();
                 };
                 t.Start();
             }
             else
             {
-
-                try
-                {
-                    string query = "INSERT INTO DemoGuest (Guest_No, Name, Address) VALUES(" + textBox4.Text + ",'" +
-                                   textBox5.Text + "', '" + textBox6.Text + "');";
-                    using (SqlConnection con = new SqlConnection(connectionString))
-                    using (SqlCommand cmd = new SqlCommand(query, con))
-                    {
-                        con.Open();
-                        object o = cmd.ExecuteReader();
-
-                        label22.Text = "Tabel er blevet indsat";
-
-                        var t = new Timer();
-                        t.Interval = sec; // it will Tick in 3 seconds
-                        t.Tick += (s, e) =>
-                        {
-                            label22.Text = "";
-                            t.Stop();
-                        };
-                        t.Start();
-                        con.Close();
-                    }
-                }
-                catch (System.Data.SqlClient.SqlException)
-                {
-
-                    label23.Text = $"{exception3.Message}";
-
-                    var t = new Timer();
-                    t.Interval = sec; // it will Tick in 3 seconds
-                    t.Tick += (s, e) =>
-                    {
-                        label23.Text = "";
-                        t.Stop();
-                    };
-                    t.Start();
-                }
-            }
-        }
-
-        private void button21_Click(object sender, EventArgs e)
-        {
-            SqlException exception3 = new SqlException($"Der skete en fejl, prøv igen");
-
-            if (textBox4.Text == "" || textBox5.Text == "" || textBox6.Text == "")
-            {
-                label23.Text = "Udfyld venligst felterne";
-
-                var t = new Timer();
-                t.Interval = sec; // it will Tick in 3 seconds
-                t.Tick += (s, e) =>
-                {
-                    label23.Text = "";
-                    t.Stop();
-                };
-                t.Start();
-            }
-            else
-            {
-                try
-                {
-                    string query = "Update DemoGuest SET Guest_No = " + this.textBox4.Text +
-                                   ", Name =  '" + this.textBox5.Text +
-                                   "', Address =  '" + this.textBox6.Text +
-                                   "' WHERE Guest_No =" + this.textBox4.Text + ";";
-                    using (SqlConnection con = new SqlConnection(connectionString))
-                    using (SqlCommand cmd = new SqlCommand(query, con))
-                    {
-                        con.Open();
-                        object o = cmd.ExecuteReader();
-
-                        label22.Text = $"{textBox4.Text} Tabel er blevet opdateret";
-
-                        var t = new Timer();
-                        t.Interval = sec; // it will Tick in 3 seconds
-                        t.Tick += (s, e) =>
-                        {
-                            label22.Text = "";
-                            t.Stop();
-                        };
-                        t.Start();
-                        con.Close();
-                    }
-                }
-                catch (System.Data.SqlClient.SqlException)
-                {
-                    label23.Text = $"{exception3.Message}";
-
-                    var t = new Timer();
-                    t.Interval = sec; // it will Tick in 3 seconds
-                    t.Tick += (s, e) =>
-                    {
-                        label23.Text = "";
-                        t.Stop();
-                    };
-                    t.Start();
-                }
-            }
-        }
-
-        private void button22_Click(object sender, EventArgs e)
-        {
-            if (textBox4.Text == "")
-            {
-                label23.Text = "Udfyld venligst ID feltet";
-
-                var t = new Timer();
-                t.Interval = sec; // it will Tick in 3 seconds
-                t.Tick += (s, e) =>
-                {
-                    label23.Text = "";
-                    t.Stop();
-                };
-                t.Start();
-            }
-            else
-            {
-                string query = "DELETE FROM DemoGuest WHERE Guest_No = (" + textBox4.Text + ");";
+                string query = "DELETE FROM DemoRoom WHERE Room_No = (" + textBox11.Text + ");";
                 using (SqlConnection con = new SqlConnection(connectionString))
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     con.Open();
                     object o = cmd.ExecuteReader();
 
-                    label22.Text = "Tabel er blevet slettet";
+                    label24.Text = "Tabel er blevet slettet";
 
                     var t = new Timer();
                     t.Interval = sec; // it will Tick in 3 seconds
                     t.Tick += (s, e) =>
                     {
-                        label22.Text = "";
-                        t.Stop();
-                    };
-                    t.Start();
-                    con.Close();
-                }
-            }
-
-        }
-
-        private void button23_Click(object sender, EventArgs e)
-        {
-            SqlException exception3 = new SqlException($"Der skete en fejl, prøv igen");
-
-            if (textBox10.Text == "" || comboBox6.Text == "" || textBox12.Text == "" || textBox13.Text == "")
-            {
-                label31.Text = "Udfyld venligst felterne";
-
-                var t = new Timer();
-                t.Interval = sec; // it will Tick in 3 seconds
-                t.Tick += (s, e) =>
-                {
-                    label31.Text = "";
-                    t.Stop();
-                };
-                t.Start();
-            }
-            else
-            {
-
-                try
-                {
-                    string query = "INSERT INTO DemoFacilities (Facilities_No, Hotel_No, Facilities, Price) VALUES(" +
-                                   textBox10.Text + "," +
-                                   comboBox6.Text + ", '" + textBox12.Text + "', " + textBox13.Text + ");";
-                    using (SqlConnection con = new SqlConnection(connectionString))
-                    using (SqlCommand cmd = new SqlCommand(query, con))
-                    {
-                        con.Open();
-                        object o = cmd.ExecuteReader();
-
-                        label30.Text = "Tabel er blevet indsat";
-
-                        var t = new Timer();
-                        t.Interval = sec; // it will Tick in 3 seconds
-                        t.Tick += (s, e) =>
-                        {
-                            label30.Text = "";
-                            t.Stop();
-                        };
-                        t.Start();
-                        con.Close();
-                    }
-                }
-                catch (System.Data.SqlClient.SqlException)
-                {
-
-                    label31.Text = $"{exception3.Message}";
-
-                    var t = new Timer();
-                    t.Interval = sec; // it will Tick in 3 seconds
-                    t.Tick += (s, e) =>
-                    {
-                        label31.Text = "";
-                        t.Stop();
-                    };
-                    t.Start();
-                }
-            }
-        }
-
-        private void button25_Click(object sender, EventArgs e)
-        {
-            if (textBox10.Text == "")
-            {
-                label31.Text = "Udfyld venligst ID feltet";
-
-                var t = new Timer();
-                t.Interval = sec; // it will Tick in 3 seconds
-                t.Tick += (s, e) =>
-                {
-                    label31.Text = "";
-                    t.Stop();
-                };
-                t.Start();
-            }
-            else
-            {
-                string query = "DELETE FROM DemoFacilities WHERE Facilities_No = (" + textBox10.Text + ");";
-                using (SqlConnection con = new SqlConnection(connectionString))
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    con.Open();
-                    object o = cmd.ExecuteReader();
-
-                    label30.Text = "Tabel er blevet slettet";
-
-                    var t = new Timer();
-                    t.Interval = sec; // it will Tick in 3 seconds
-                    t.Tick += (s, e) =>
-                    {
-                        label30.Text = "";
+                        label24.Text = "";
                         t.Stop();
                     };
                     t.Start();
@@ -1093,124 +1053,183 @@ namespace Database_gui_test
             }
         }
 
-        private void button24_Click(object sender, EventArgs e)
+
+        #endregion
+
+        #region CustomSql
+
+        private void button15_Click(object sender, EventArgs e)
         {
-            SqlException exception3 = new SqlException($"Der skete en fejl, prøv igen");
-
-            if (textBox10.Text == "" || comboBox6.Text == "" || textBox12.Text == "" || textBox13.Text == "")
+            string input = textBox14.Text;
+            string query = input;
+            //string queryins = textBox14.Text;
+            SqlException exception3 = new SqlException($"Fejl i SQL, ret i teksten og prøv igen :)");
+            if (textBox14.Text == "")
             {
-                label31.Text = "Udfyld venligst felterne";
-
+                label32.Text = "Udfyld venligst feltet";
                 var t = new Timer();
                 t.Interval = sec; // it will Tick in 3 seconds
                 t.Tick += (s, e) =>
                 {
-                    label31.Text = "";
+                    label32.Text = "";
                     t.Stop();
                 };
                 t.Start();
             }
             else
             {
-                try
+                if (input.StartsWith("Greate") || input.StartsWith("greate"))
                 {
-                    string query = "Update DemoFacilities SET Facilities_No = " +
-                                   this.textBox10.Text + ", Hotel_No =  " +
-                                   this.comboBox6.Text +
-                                   ", Facilities = '" + this.textBox12.Text + "', Price = " +
-                                   this.textBox13.Text + " WHERE Facilities_No =" +
-                                   this.textBox10.Text + ";";
-                    using (SqlConnection con = new SqlConnection(connectionString))
-                    using (SqlCommand cmd = new SqlCommand(query, con))
-                    {
-                        con.Open();
-                        object o = cmd.ExecuteReader();
+                    label32.Text = "Det er ikke tilladt at lave en ny tabel";
 
-                        label30.Text = $"{textBox10.Text} Tabel er blevet opdateret";
+                    var t = new Timer();
+                    t.Interval = sec; // it will Tick in 3 seconds
+                    t.Tick += (s, e) =>
+                    {
+                        label32.Text = "";
+                        t.Stop();
+                    };
+                    t.Start();
+
+                }
+                else
+                {
+                    try
+                    {
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            connection.Open();
+                            if (input.StartsWith("Select") || input.StartsWith("select"))
+                            {
+                                using (SqlCommand cmd = new SqlCommand(query, connection))
+                                    cmd.ExecuteNonQuery();
+
+                                SqlDataAdapter data2 = new SqlDataAdapter(query, connection);
+                                DataTable diagram2 = new DataTable();
+                                data2.Fill(diagram2);
+
+                                dataGridView1.DataSource = diagram2;
+                            }
+                            else
+                            {
+                                SqlDataAdapter data3 = new SqlDataAdapter(query, connection);
+                                DataTable diagram3 = new DataTable();
+                                data3.Fill(diagram3);
+                                dataGridView1.DataSource = diagram3;
+
+                            }
+
+                            label33.Text = $"{query}";
+                            var t = new Timer();
+                            t.Interval = sec; // it will Tick in 3 seconds
+                            t.Tick += (s, e) =>
+                            {
+                                label33.Text = "";
+                                t.Stop();
+                            };
+                            t.Start();
+                            connection.Close();
+                        }
+                    }
+                    catch (System.Data.SqlClient.SqlException)
+                    {
+
+                        label32.Text = $"{exception3.Message}";
 
                         var t = new Timer();
                         t.Interval = sec; // it will Tick in 3 seconds
                         t.Tick += (s, e) =>
                         {
-                            label30.Text = "";
+                            label32.Text = "";
                             t.Stop();
                         };
                         t.Start();
-                        con.Close();
                     }
-                }
-                catch (System.Data.SqlClient.SqlException)
-                {
-                    label31.Text = $"{exception3.Message}";
-
-                    var t = new Timer();
-                    t.Interval = sec; // it will Tick in 3 seconds
-                    t.Tick += (s, e) =>
-                    {
-                        label31.Text = "";
-                        t.Stop();
-                    };
-                    t.Start();
                 }
             }
         }
 
-        private void button16_Click(object sender, EventArgs e)
-        {
-            if (textBox7.Text == "")
-            {
-                label18.Text = "Udfyld venligst ID feltet";
+        #endregion
 
-                var t = new Timer();
-                t.Interval = sec; // it will Tick in 3 seconds
-                t.Tick += (s, e) =>
-                {
-                    label18.Text = "";
-                    t.Stop();
-                };
-                t.Start();
+        #region Luk
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (comboBox2.SelectedIndex == -1)
+            {
+                textBox2.Text = string.Empty;
             }
             else
             {
-                string query = "DELETE FROM DemoBooking WHERE Booking_id = (" + textBox7.Text + ");";
-                using (SqlConnection con = new SqlConnection(connectionString))
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    con.Open();
-                    object o = cmd.ExecuteReader();
-
-                    label19.Text = "Tabel er blevet slettet";
-
-                    var t = new Timer();
-                    t.Interval = sec; // it will Tick in 3 seconds
-                    t.Tick += (s, e) =>
-                    {
-                        label19.Text = "";
-                        t.Stop();
-                    };
-                    t.Start();
-                    con.Close();
-                }
+                textBox2.Text = comboBox2.SelectedItem.ToString();
             }
         }
 
-        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
-            string query = "Select Room_No from DemoRoom Where Hotel_No = " + comboBox3.Text + "; ";
-            using (SqlConnection con = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(query, con))
+            char ch = e.KeyChar;
+
+            if (!char.IsLetter(ch) && ch != 8)
             {
-                SqlDataReader myReader;
-                con.Open();
-                myReader = cmd.ExecuteReader();
-                comboBox5.Items.Clear();
-                while (myReader.Read())
-                {
-                    int sName = myReader.GetInt32("Room_No");
-                    //string sName = myReader.GetString("Name");
-                    comboBox5.Items.Add(sName);
-                }
+                e.Handled = true;
             }
         }
+
+        private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char ch = e.KeyChar;
+
+            if (!char.IsLetter(ch) && ch != 8)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void textBox7_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char ch = e.KeyChar;
+
+            if (!char.IsDigit(ch) && ch != 8)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void textBox8_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char ch = e.KeyChar;
+
+            if (!char.IsDigit(ch) && ch != 8)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        #endregion
     }
 }
