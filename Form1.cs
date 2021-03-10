@@ -93,48 +93,9 @@ namespace Database_gui_test
             }
             else
             {
-
-                try
+                if (input.StartsWith("Greate") || input.StartsWith("greate"))
                 {
-                    using (SqlConnection connection = new SqlConnection(connectionString))
-                    {
-                        connection.Open();
-                        if (input.StartsWith("S"))
-                        {
-                            using (SqlCommand cmd = new SqlCommand(query, connection))
-                                cmd.ExecuteNonQuery();
-
-                            SqlDataAdapter data2 = new SqlDataAdapter(query, connection);
-                            DataTable diagram2 = new DataTable();
-                            data2.Fill(diagram2);
-
-                            dataGridView1.DataSource = diagram2;
-                        }
-                        else
-                        {
-                            SqlDataAdapter data3 = new SqlDataAdapter(query, connection);
-                            DataTable diagram3 = new DataTable();
-                            data3.Fill(diagram3);
-                            dataGridView1.DataSource = diagram3;
-
-                        }
-
-                        label33.Text = $"{query}";
-                        var t = new Timer();
-                        t.Interval = sec; // it will Tick in 3 seconds
-                        t.Tick += (s, e) =>
-                        {
-                            label33.Text = "";
-                            t.Stop();
-                        };
-                        t.Start();
-                        connection.Close();
-                    }
-                }
-                catch (System.Data.SqlClient.SqlException)
-                {
-
-                    label32.Text = $"{exception3.Message}";
+                    label32.Text = "Det er ikke tilladt at lave en ny tabel";
 
                     var t = new Timer();
                     t.Interval = sec; // it will Tick in 3 seconds
@@ -144,7 +105,64 @@ namespace Database_gui_test
                         t.Stop();
                     };
                     t.Start();
+
                 }
+                else
+                {
+                    try
+                    {
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            connection.Open();
+                            if (input.StartsWith("Select") || input.StartsWith("select"))
+                            {
+                                using (SqlCommand cmd = new SqlCommand(query, connection))
+                                    cmd.ExecuteNonQuery();
+
+                                SqlDataAdapter data2 = new SqlDataAdapter(query, connection);
+                                DataTable diagram2 = new DataTable();
+                                data2.Fill(diagram2);
+
+                                dataGridView1.DataSource = diagram2;
+                            }
+                            else
+                            {
+                                SqlDataAdapter data3 = new SqlDataAdapter(query, connection);
+                                DataTable diagram3 = new DataTable();
+                                data3.Fill(diagram3);
+                                dataGridView1.DataSource = diagram3;
+
+                            }
+
+                            label33.Text = $"{query}";
+                            var t = new Timer();
+                            t.Interval = sec; // it will Tick in 3 seconds
+                            t.Tick += (s, e) =>
+                            {
+                                label33.Text = "";
+                                t.Stop();
+                            };
+                            t.Start();
+                            connection.Close();
+                        }
+                    }
+                    catch (System.Data.SqlClient.SqlException)
+                    {
+
+                        label32.Text = $"{exception3.Message}";
+
+                        var t = new Timer();
+                        t.Interval = sec; // it will Tick in 3 seconds
+                        t.Tick += (s, e) =>
+                        {
+                            label32.Text = "";
+                            t.Stop();
+                        };
+                        t.Start();
+                    }
+                }
+
+                
             }
 
 
