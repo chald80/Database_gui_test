@@ -1065,13 +1065,14 @@ namespace Database_gui_test
             // 
             // textBox14
             // 
+            this.textBox14.CharacterCasing = System.Windows.Forms.CharacterCasing.Lower;
             this.textBox14.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBox14.Location = new System.Drawing.Point(51, 35);
             this.textBox14.Multiline = true;
             this.textBox14.Name = "textBox14";
             this.textBox14.Size = new System.Drawing.Size(704, 83);
             this.textBox14.TabIndex = 3;
-            this.textBox14.Text = "Select * From DemoHotel";
+            this.textBox14.Text = "select * from demohotel";
             // 
             // dataGridView1
             // 

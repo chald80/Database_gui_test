@@ -1098,10 +1098,13 @@ namespace Database_gui_test
 
         private void button15_Click(object sender, EventArgs e)
         {
-            string input = textBox14.Text;
+            
+            string input = textBox14.Text.TrimStart();
             string query = input;
+            
             //string queryins = textBox14.Text;
             SqlException exception3 = new SqlException($"Fejl i SQL, ret i teksten og prøv igen :)");
+            SqlException exception4 = new SqlException($"Fejl i SQL, ret i teksten og prøv igen :)");
             if (textBox14.Text == "")
             {
                 label32.Text = "Udfyld venligst feltet";
@@ -1116,10 +1119,9 @@ namespace Database_gui_test
             }
             else
             {
-                if (input.StartsWith("Greate") || input.StartsWith("greate"))
+                if(input.Contains("drop"))
                 {
-                    label32.Text = "Det er ikke tilladt at lave en ny tabel";
-
+                    label32.Text = "Drop er ikke et tilladt ord at bruge";
                     var t = new Timer();
                     t.Interval = sec; // it will Tick in 3 seconds
                     t.Tick += (s, e) =>
@@ -1128,60 +1130,155 @@ namespace Database_gui_test
                         t.Stop();
                     };
                     t.Start();
-
                 }
                 else
                 {
-                    try
+                    if (input.Contains("Delete") || input.StartsWith("delete"))
                     {
-                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        if (input.Contains("where") || input.Contains("Where"))
                         {
-                            connection.Open();
-                            if (input.StartsWith("Select") || input.StartsWith("select"))
+                            try
                             {
-                                using (SqlCommand cmd = new SqlCommand(query, connection))
-                                    cmd.ExecuteNonQuery();
+                                using (SqlConnection connection = new SqlConnection(connectionString))
+                                {
+                                    connection.Open();
+                                    using (SqlCommand cmd1 = new SqlCommand(query, connection))
+                                        cmd1.ExecuteNonQuery();
 
-                                SqlDataAdapter data2 = new SqlDataAdapter(query, connection);
-                                DataTable diagram2 = new DataTable();
-                                data2.Fill(diagram2);
+                                    RundemoHotel();
+                                    RundemoGuest();
+                                    RunDemoBooking();
+                                    RunDemoFacilities();
+                                    RunDemoRooms();
 
-                                dataGridView1.DataSource = diagram2;
+                                    SqlDataAdapter data2 = new SqlDataAdapter(query, connection);
+                                    DataTable diagram2 = new DataTable();
+                                    data2.Fill(diagram2);
+
+                                    dataGridView1.DataSource = diagram2;
+                                    connection.Close();
+
+                                    label33.Text = "Tabel er blevet slettet";
+                                    var t = new Timer();
+                                    t.Interval = sec; // it will Tick in 3 seconds
+                                    t.Tick += (s, e) =>
+                                    {
+                                        label33.Text = "";
+                                        t.Stop();
+                                    };
+                                    t.Start();
+                                }
                             }
-                            else
+                            catch (System.Data.SqlClient.SqlException)
                             {
-                                SqlDataAdapter data3 = new SqlDataAdapter(query, connection);
-                                DataTable diagram3 = new DataTable();
-                                data3.Fill(diagram3);
-                                dataGridView1.DataSource = diagram3;
 
+                                label32.Text = $"{exception3.Message}";
+
+                                var t = new Timer();
+                                t.Interval = sec; // it will Tick in 3 seconds
+                                t.Tick += (s, e) =>
+                                {
+                                    label32.Text = "";
+                                    t.Stop();
+                                };
+                                t.Start();
                             }
-
-                            label33.Text = $"{query}";
+                        }
+                        else
+                        {
+                            label32.Text = "Delete sætning Skal indholde where";
                             var t = new Timer();
                             t.Interval = sec; // it will Tick in 3 seconds
                             t.Tick += (s, e) =>
                             {
-                                label33.Text = "";
+                                label32.Text = "";
                                 t.Stop();
                             };
                             t.Start();
-                            connection.Close();
+
                         }
                     }
-                    catch (System.Data.SqlClient.SqlException)
+                    else
                     {
 
-                        label32.Text = $"{exception3.Message}";
-
-                        var t = new Timer();
-                        t.Interval = sec; // it will Tick in 3 seconds
-                        t.Tick += (s, e) =>
+                        if (input.StartsWith("Greate") || input.StartsWith("greate"))
                         {
-                            label32.Text = "";
-                            t.Stop();
-                        };
-                        t.Start();
+                            label32.Text = "Det er ikke tilladt at lave en ny tabel";
+
+                            var t = new Timer();
+                            t.Interval = sec; // it will Tick in 3 seconds
+                            t.Tick += (s, e) =>
+                            {
+                                label32.Text = "";
+                                t.Stop();
+                            };
+                            t.Start();
+
+                        }
+                        else
+                        {
+                            try
+                            {
+                                if (input.StartsWith("SELECT") || input.StartsWith("select"))
+                                {
+
+                                    using (SqlConnection connection = new SqlConnection(connectionString))
+                                    {
+                                        connection.Open();
+                                        SqlDataAdapter data3 = new SqlDataAdapter(query, connection);
+                                        DataTable diagram3 = new DataTable();
+                                        data3.Fill(diagram3);
+                                        dataGridView1.DataSource = diagram3;
+                                        connection.Close();
+                                    }
+
+                                }
+                                else
+                                {
+                                    using (SqlConnection connection = new SqlConnection(connectionString))
+                                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                                    {
+                                        connection.Open();
+                                        cmd.ExecuteNonQuery();
+
+                                        RundemoHotel();
+                                        RundemoGuest();
+                                        RunDemoBooking();
+                                        RunDemoFacilities();
+                                        RunDemoRooms();
+
+                                        connection.Close();
+
+                                        label33.Text = $"{input}";
+                                        var t = new Timer();
+                                        t.Interval = sec; // it will Tick in 3 seconds
+                                        t.Tick += (s, e) =>
+                                        {
+                                            label33.Text = "";
+                                            t.Stop();
+                                        };
+                                        t.Start();
+
+                                    }
+                                }
+
+                            }
+                            catch (System.Data.SqlClient.SqlException)
+                            {
+
+                                label32.Text = $"{exception4.Message}";
+
+                                var t = new Timer();
+                                t.Interval = sec; // it will Tick in 3 seconds
+                                t.Tick += (s, e) =>
+                                {
+                                    label32.Text = "";
+                                    t.Stop();
+                                };
+                                t.Start();
+                            }
+                        }
+
                     }
                 }
             }
@@ -1270,6 +1367,6 @@ namespace Database_gui_test
 
         #endregion
 
-       
+
     }
 }
