@@ -49,6 +49,7 @@ namespace Database_gui_test
             this.label7 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label34 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label22 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
@@ -313,6 +314,7 @@ namespace Database_gui_test
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label34);
             this.tabPage1.Controls.Add(this.textBox1);
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.button4);
@@ -336,6 +338,15 @@ namespace Database_gui_test
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Hotel";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(7, 389);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(118, 20);
+            this.label34.TabIndex = 21;
+            this.label34.Text = "Version: 1.00.347";
             // 
             // tabPage2
             // 
@@ -1223,6 +1234,7 @@ namespace Database_gui_test
         private System.Windows.Forms.TextBox textBox14;
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label label34;
     }
 }
 
